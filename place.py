@@ -35,7 +35,7 @@ class Test_new_location():
             print("Very good!!!")
         else:
             print("Bag?????????")
-
+            print("-" * 50)
         check_post = result_post.json()
         check_info_post = check_post.get("status")
         print("Status is : " + check_info_post)
@@ -43,6 +43,7 @@ class Test_new_location():
         print("Ensue fine!!!")
         place_id = check_post.get("place_id")
         print("Place_id : " + place_id)
+        print("-" * 50)
 # Проверка создания локации
         get_resuorce = "/maps/api/place/get/json"
         get_url = base_url + get_resuorce + key + "&place_id=" + place_id
@@ -50,11 +51,13 @@ class Test_new_location():
         result_get = requests.get(get_url)
         print(result_get.text)
         print(str(result_get.status_code) + " : status code")
+        print("-" * 50)
         assert 200 == result_get.status_code
         if result_get.status_code == 200:
             print("Very good!!!")
         else:
             print("Bag?????????")
+            print("-" * 50)
 # Изменение локации
         put_resuorce = "/maps/api/place/update/json"
         put_url = base_url + put_resuorce + key
@@ -72,11 +75,13 @@ class Test_new_location():
             print("Very good!!!")
         else:
             print("Bag?????????")
+            print("-" * 50)
         check_put = result_put.json()
         check_put_info = check_put.get("msg")
         print("Ok : " + check_put_info)
         assert check_put_info == "Address successfully updated"
         print("Very good!!!!!!!")
+        print("-" * 50)
 # Проверка изменения локации
         result_get = requests.get(get_url)
         print(result_get.text)
@@ -86,6 +91,7 @@ class Test_new_location():
             print("Very good!!!")
         else:
             print("Bag?????????")
+            print("-" * 50)
 
 
         check_address = result_get.json()
@@ -93,6 +99,52 @@ class Test_new_location():
         print("Ok : " + check_address_info)
         assert check_address_info == "100 Lenina street, RU"
         print("Very good!!!!!!!")
+        print("-" * 50)
+
+# Удаление локации
+        delete_resuorce = "/maps/api/place/delete/json"
+        delete_url = base_url + delete_resuorce + key
+        print(delete_url)
+        json_for_delete_new_location = {
+            "place_id": place_id
+        }
+        result_delete = requests.delete(delete_url, json=json_for_delete_new_location)
+        print(result_delete.text)
+        print(str(result_delete.status_code) + " : status code")
+        assert 200 == result_delete.status_code
+        if result_delete.status_code == 200:
+            print("Very good!!!")
+        else:
+            print("Bag?????????")
+            print("-" * 50)
+        check_status = result_delete.json()
+        check_status_info = check_status.get("status")
+        print("Ok : " + check_status_info)
+        assert check_status_info == "OK"
+        print("Very good!!!!!!!")
+        print("-" * 50)
+# Проверка удаления локации
+        result_get = requests.get(get_url)
+        print(result_get.text)
+        print(str(result_get.status_code) + " : status code")
+        print("-" * 50)
+        assert 404 == result_get.status_code
+        if result_get.status_code == 404:
+            print("Very good!!! Location is not founder")
+        else:
+            print("Bag?????????")
+            print("-" * 50)
+
+
+        check_msg = result_get.json()
+        check_msg_info = check_msg.get("msg")
+        print("Ok : " + check_msg_info)
+        print("-" * 50)
+        assert check_msg_info == "Get operation failed, looks like place_id  doesn't exists"
+        print("Very good!!!!!!! Location Delete is not founder")
+        print("*" * 50)
+        print("Testing is Test_new_location Closed very god!!!!!!!")
+        print("*" * 50)
 
 
 new_place = Test_new_location()
